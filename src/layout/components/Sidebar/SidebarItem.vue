@@ -93,3 +93,13 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.el-menu:not(.el-menu--collapse):not(.el-menu--popup) {
+  .menu-wrapper.nest-menu {
+    li.el-menu-item {
+      padding-left: 80px!important;
+    }
+  }
+}
+</style>

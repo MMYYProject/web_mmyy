@@ -1,28 +1,18 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <!-- <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" /> -->
 
-    <breadcrumb class="breadcrumb-container" />
-
+    <!-- <breadcrumb id="breadcrumb-container" class="breadcrumb-container" /> -->
+    <h1 class="website_title">亲子年货节商户后台</h1>
     <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <img :src="avatar" class="user-avatar">
+          <span>{{ name }}</span>
           <i class="el-icon-caret-bottom" />
         </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -33,17 +23,25 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
+// import Breadcrumb from '@/components/Breadcrumb'
+// import Hamburger from '@/components/Hamburger'
+// import ErrorLog from '@/components/ErrorLog'
+// import Screenfull from '@/components/Screenfull'
+// import SizeSelect from '@/components/SizeSelect'
+// import Search from '@/components/HeaderSearch'
 
 export default {
-  components: {
-    Breadcrumb,
-    Hamburger
-  },
+  // components: {
+  //   Breadcrumb,
+  //   Hamburger,
+  //   ErrorLog,
+  //   Screenfull,
+  //   SizeSelect,
+  //   Search
+  // },
   computed: {
     ...mapGetters([
-      'sidebar',
+      'name',
       'avatar'
     ])
   },
@@ -61,11 +59,22 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
-  height: 50px;
-  overflow: hidden;
   position: relative;
+  align-items: center;
+  justify-content: space-between;
+  height: 95px;
+  overflow: hidden;
+  display: flex;
   background: #fff;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
+
+  .website_title {
+    margin-left: 50px;
+    height:31px;
+    font-size:32px;
+    font-weight:bold;
+    color:rgba(241,98,99,1);
+  }
 
   .hamburger-container {
     line-height: 46px;
@@ -82,6 +91,11 @@ export default {
 
   .breadcrumb-container {
     float: left;
+  }
+
+  .errLog-container {
+    display: inline-block;
+    vertical-align: top;
   }
 
   .right-menu {
@@ -113,23 +127,28 @@ export default {
 
     .avatar-container {
       margin-right: 30px;
+      display: flex;
+      align-items: center;
 
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+        display: flex;
+        align-items: center;
 
         .user-avatar {
           cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
+          margin-right: 12px;
         }
 
         .el-icon-caret-bottom {
           cursor: pointer;
           position: absolute;
           right: -20px;
-          top: 25px;
+          top: 20px;
           font-size: 12px;
         }
       }

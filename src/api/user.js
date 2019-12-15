@@ -1,10 +1,16 @@
 import request from '@/utils/request'
 
-export function login(data) {
+export function login(mobile) {
   return request({
-    url: '/user/login',
-    method: 'post',
-    data
+    url: `/${mobile}/loginCode`,
+    method: 'get'
+  })
+}
+
+export function sendCode(mobile) {
+  return request({
+    url: `/${mobile}/sendCode`,
+    method: 'get'
   })
 }
 
@@ -17,6 +23,7 @@ export function getInfo(token) {
 }
 
 export function logout() {
+  // to do change
   return request({
     url: '/user/logout',
     method: 'post'
