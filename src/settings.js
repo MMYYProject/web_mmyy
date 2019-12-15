@@ -34,6 +34,7 @@ module.exports = {
   errorLog: 'production',
 
   SERVICE_HOST: 'https://wechat.mamayy.com/mother',
+  UPLOAD_URL: 'https://wechat.mamayy.com/mother/uploadUrl',
   USER_STORAGE_KEY: 'user_info',
 
   DEFAULT_USER_NAME: '管理员',

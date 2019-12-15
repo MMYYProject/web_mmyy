@@ -7,10 +7,11 @@ export function getShopInfo(userId) {
   })
 }
 
-export function getShopCategory() {
+export function getShopCategory(params) {
   return request({
     url: '/gainShopCategory',
-    method: 'post'
+    method: 'post',
+    data: params
   })
 }
 
