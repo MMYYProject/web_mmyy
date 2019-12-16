@@ -10,7 +10,6 @@ const shopRouter = {
     {
       path: 'index',
       component: () => import('@/views/shop/index'),
-      name: '店铺装修',
       meta: { title: '店铺装修', icon: 'shopping', noCache: true }
     }
   ]

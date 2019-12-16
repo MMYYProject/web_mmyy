@@ -89,10 +89,11 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        const query = route.query
-        if (query) {
-          this.redirect = query.redirect
-        }
+        this.redirect = route.query && route.query.redirect
+        // const query = route.query
+        // if (query) {
+        //   this.redirect = query.redirect
+        // }
       },
       immediate: true
     }
