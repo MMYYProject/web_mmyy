@@ -313,10 +313,14 @@ export default {
       return list[idx] ? list[idx] : '(例：无)'
     },
     getImgList(imgStr) {
-      if (imgStr.startsWith('[')) {
-        return JSON.parse(imgStr)
+      if (imgStr) {
+        if (imgStr.startsWith('[')) {
+          return JSON.parse(imgStr)
+        } else {
+          return [].concat(imgStr)
+        }
       } else {
-        return [].concat(imgStr)
+        return []
       }
     },
     save() {
