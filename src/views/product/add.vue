@@ -180,7 +180,7 @@ export default {
           { name: '' },
           { name: '' }
         ],
-        shop_id: this.$store.state.user.user_info.shopId,
+        shop_id: this.$store.state.user.user_info.id,
         recommend: 0
       },
       dialogImageUrl: '',

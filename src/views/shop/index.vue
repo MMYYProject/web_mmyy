@@ -106,7 +106,7 @@ export default {
         this.categorySet = categorySet.map(item => {
           return {
             label: item.category,
-            value: item.id
+            value: item.id + ''
           }
         })
       }
