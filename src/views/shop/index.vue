@@ -12,6 +12,11 @@
         label-position="left"
         label-width="133px"
       >
+        <div v-if="form.shopId">
+          <el-form-item label="店铺ID:" class="form_item_shopName">
+            <el-input v-model="form.shopId" disabled />
+          </el-form-item>
+        </div>
         <el-form-item label="店铺名称:" class="form_item_shopName">
           <el-input v-model="form.shopName" />
         </el-form-item>
@@ -74,7 +79,8 @@ export default {
         detailAddress: undefined,
         linkPhone: undefined,
         category: undefined,
-        shopDesc: undefined
+        shopDesc: undefined,
+        shopId: undefined
       },
       rules: {
         linkPhone: [
