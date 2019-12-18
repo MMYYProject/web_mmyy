@@ -9,17 +9,17 @@
         <sub-navbar />
       </div>
       <app-main />
-      <right-panel v-if="showSettings">
+      <!-- <right-panel v-if="showSettings">
         <settings />
-      </right-panel>
+      </right-panel> -->
     </div>
   </div>
 </template>
 
 <script>
-import RightPanel from '@/components/RightPanel'
+// import RightPanel from '@/components/RightPanel'
 // import { AppMain, Navbar, Settings, Sidebar, TagsView, SubNavbar } from './components'
-import { AppMain, Navbar, Settings, Sidebar, SubNavbar } from './components'
+import { AppMain, Navbar, Sidebar, SubNavbar } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
@@ -28,8 +28,6 @@ export default {
   components: {
     AppMain,
     Navbar,
-    RightPanel,
-    Settings,
     Sidebar,
     // TagsView,
     SubNavbar

@@ -7,9 +7,10 @@ const shopRouter = {
   component: Layout,
   meta: { title: '店铺装修', icon: 'shopping' },
   alwaysShow: true,
+  redirect: '/index',
   children: [
     {
-      path: 'index',
+      path: '/index',
       component: () => import('@/views/shop/index'),
       name: '店铺装修',
       meta: { title: '店铺装修' }
