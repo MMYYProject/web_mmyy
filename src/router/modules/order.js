@@ -5,10 +5,10 @@ import Layout from '@/layout'
 const orderRouter = {
   path: '/order',
   component: Layout,
-  redirect: '/order/index',
+  redirect: '/orderIndex',
   children: [
     {
-      path: 'index',
+      path: '/orderIndex',
       component: () => import('@/views/order/index'),
       name: '订单管理',
       meta: { title: '订单管理', icon: 'list', noCache: true }

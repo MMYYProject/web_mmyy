@@ -42,3 +42,29 @@ export function getProductList(searchText = '', page = 0, pageSize = 10) {
     method: 'get'
   })
 }
+
+// 订单管理
+
+export function orderManage(params) {
+  return request({
+    url: '/gainPayMoneyListByName',
+    method: 'post',
+    data: params
+  })
+}
+// 拉取快递信息
+export function ajaxExpressList(params) {
+  return request({
+    url: '/gainDeliveryList',
+    method: 'post',
+    data: params
+  })
+}
+//
+export function ajaxDeliverGoods(params) {
+  return request({
+    url: '/updateDeliveryByOrderNo',
+    method: 'post',
+    data: params
+  })
+}

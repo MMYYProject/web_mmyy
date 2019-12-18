@@ -20,50 +20,53 @@
           border
           style="width: 100%"
         >
-          <el-table-column prop="id" label="商品ID" align="center" />
-          <el-table-column prop="goodsImg" label="图片" align="center">
+          <el-table-column prop="orderNo" label="订单编号" align="center" />
+          <!-- <el-table-column prop="goodsImg" label="图片" align="center">
             <template slot-scope="scope">
-              <img
-                :src="getGoodImg(scope.row.goodsImg)"
-                class="product_img"
-                alt=""
-                @click="handlePictureCardPreview(getGoodImg(scope.row.goodsImg))"
-              >
+              <el-image
+                style="width: 100px; height: 100px"
+                :src="scope.row.goodsImg"
+                :preview-src-list="[scope.row.goodsImg]"
+              />
+            </template>
+          </el-table-column> -->
+          <!-- <el-table-column prop="goodsName" label="商品名称" align="center" /> -->
+          <el-table-column prop="createTime" label="订单创建时间" align="center">
+            <template slot-scope="scope">
+              <span>{{ scope.row.createTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="goodsName" label="名称" align="center" />
-          <el-table-column prop="createTime" label="添加时间" align="center">
+          <el-table-column prop="allShopMoney" label="订单金额" align="center">
             <template slot-scope="scope">
-              <span>{{ scope.row.createTime | getCreateTime }}</span>
+              <div>{{ scope.row.allShopMoney }}元</div>
             </template>
           </el-table-column>
-          <el-table-column prop="price" label="价格（元）" align="center" />
-          <el-table-column prop="fare" label="库存" align="center" />
-          <el-table-column prop="recommend" label="是否首页展示" align="center">
+          <el-table-column prop="userPhone" label="联系电话" align="center" />
+          <el-table-column prop="orderStatus" label="状态" align="center">
             <template slot-scope="scope">
-              <el-select
-                v-model="scope.row.recommend"
-                class="recommend_select"
-                @change="updateRecommend(scope)"
-              >
-                <el-option
-                  v-for="item in recommendSet"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
+              <div v-if="scope.row.orderStatus ===0">待付款</div>
+              <div v-if="scope.row.orderStatus ===1">待发货</div>
+              <div v-if="scope.row.orderStatus ===2">待收货</div>
+              <div v-if="scope.row.orderStatus ===3">售后</div>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="183px" align="center">
             <template slot-scope="scope">
-              <el-button size="small" @click="handleEdit(scope.row.id)">编辑</el-button>
-              <el-popconfirm
+              <el-row>
+                <span v-if="scope.row.orderStatus!=1">
+                  <el-button type="primary" disabled size="small" @click="handleEdit(scope.row.orderNo)">发货</el-button>
+                </span>
+                <span v-else>
+                  <el-button type="primary" size="small" @click="handleEdit(scope.row.orderNo)">发货</el-button>
+                </span>
+                <el-button type="primary" size="small" @click="handleLookDetail(scope.row.shopInfoList)">查看详情</el-button>
+              </el-row>
+              <!-- <el-popconfirm
                 title="确定删除吗？"
                 @onConfirm="handleDel(scope.row.id)"
               >
                 <el-button slot="reference" size="small">删除</el-button>
-              </el-popconfirm>
+              </el-popconfirm> -->
             </template>
           </el-table-column>
         </el-table>
@@ -76,15 +79,76 @@
         @current-change="handleCurrentChange"
       />
     </div>
-    <el-dialog :visible.sync="dialogVisible">
-      <img width="100%" :src="dialogImageUrl" alt>
+    <el-dialog :visible.sync="dialogVisible" title="发货">
+      <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+        <el-form-item label="快递公司" prop="deliveryCompany">
+          <el-select v-model="form.deliveryCompany" filterable placeholder="请选择物流公司">
+            <el-option
+              v-for="item in expressList"
+              :key="item.id"
+              :label="item.delivery"
+              :value="item.delivery"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="快递单号" prop="deliveryNo">
+          <el-input v-model="form.deliveryNo" placeholder="请输入快递单号" />
+        </el-form-item>
+        <div v-if="form.deliveryCompany==='京东快递'">
+          <el-form-item label="京东青龙配送编码">
+            <el-input v-model="form.customerName" placeholder="请输入京东青龙配送编码" />
+          </el-form-item>
+        </div>
+        <el-button type="primary" @click="deliverGoods('form')">立即发货</el-button>
+        <el-button>取消</el-button>
+      </el-form>
+    </el-dialog>
+    <el-dialog :width="'50vw'" :visible.sync="dialogVisibleDetail" title="查看详情">
+      <el-table
+        :data="tableData"
+        stripe
+        style="width: 100%"
+        :height="'50vh'"
+      >
+        <el-table-column
+          prop="goodsName"
+          label="商品名称"
+        />
+        <el-table-column
+          prop="price"
+          label="价格"
+        />
+        <el-table-column
+          prop="discountPrice"
+          label="折扣价"
+        />
+        <el-table-column
+          prop="standard"
+          label="规格"
+        />
+        <el-table-column
+          prop="num"
+          label="数量"
+        />
+        <el-table-column
+          prop="allPrice"
+          label="总价"
+        />
+        <el-table-column
+          prop="stock"
+          label="库存剩余"
+        />
+        <el-table-column
+          prop="fare"
+          label="运费"
+        />
+      </el-table>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getProductList, updateGood, delGood } from '@/api/product'
-
+import { orderManage, ajaxExpressList, ajaxDeliverGoods } from '@/api/product'
 export default {
   filters: {
     getCreateTime(createTime) {
@@ -93,7 +157,9 @@ export default {
   },
   data() {
     return {
+      shopId: undefined,
       loading: true,
+      tableData: [],
       searchText: undefined,
       currentPage: 1,
       pageSize: 10,
@@ -108,14 +174,49 @@ export default {
       }],
       dialogImageUrl: undefined,
       dialogVisible: false,
-      editDialogVisible: false,
-      editGoodId: undefined
+      dialogVisibleDetail: false,
+      editGoodId: undefined,
+      expressList: [], //
+      form: {
+        deliveryNo: undefined,
+        deliveryCompany: undefined,
+        orderNo: undefined,
+        customerName: undefined
+      },
+      rules: {
+        deliveryCompany: [
+          { required: true, message: '请选择快递公司', trigger: 'change' }
+        ],
+        deliveryNo: [
+          { required: true, message: '请输入快递单号', trigger: 'blur' }
+        ]
+      }
     }
   },
   created() {
+    const userInfo = JSON.parse(localStorage.getItem('user_info'))
+    this.shopId = userInfo.id
     this.fetchData()
+    this.handleAjaxExpress()
   },
   methods: {
+    deliverGoods(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const params = { ...this.form }
+          ajaxDeliverGoods(params).then(res => {
+            console.log(res)
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    handleLookDetail(shopInfoList) {
+      this.dialogVisibleDetail = true
+      this.tableData = shopInfoList.goodsList
+    },
     getGoodImg(goodsImg) {
       if (goodsImg) {
         if (goodsImg.startsWith('[')) {
@@ -127,9 +228,18 @@ export default {
         return ''
       }
     },
+    // 获取快递公司
+    handleAjaxExpress() {
+      ajaxExpressList({}).then(res => {
+        console.log(res)
+        this.expressList = res.obj
+      })
+    },
     fetchData() {
       this.loading = true
-      getProductList(this.searchText, this.currentPage - 1, this.pageSize)
+
+      const params = { shopId: this.shopId, orderNo: this.searchText, page: this.currentPage - 1, pageSize: this.pageSize }
+      orderManage(params)
         .then(res => {
           this.list = res.obj.data || [res.obj] || []
           this.total = Array.isArray(res.obj.data) ? res.obj.total : 1
@@ -141,44 +251,9 @@ export default {
           this.loading = false
         })
     },
-    updateRecommend(scope) {
-      this.loading = true
-      const params = {
-        ...scope.row
-      }
-
-      params.detailImg = JSON.stringify(params.detailImg)
-      params.goodsImg = JSON.stringify([].concat(params.goodsImg))
-
-      updateGood(params)
-        .then(res => {
-          if (res.result === 0) {
-            this.fetchData()
-          }
-        })
-        .catch(error => {
-          console.warn(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
-    },
-    handleEdit(id) {
-      this.editDialogVisible = true
-      this.editGoodId = id
-    },
-    handleDel(id) {
-      this.loading = true
-      delGood(id)
-        .then(() => {
-          this.fetchData()
-        })
-        .catch(error => {
-          console.warn(error)
-        })
-        .finally(() => {
-          this.loading = false
-        })
+    handleEdit(orderNo) {
+      this.dialogVisible = true
+      this.form.orderNo = orderNo
     },
     handleCurrentChange(val) {
       this.currentPage = val
