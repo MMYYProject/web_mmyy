@@ -21,16 +21,6 @@
           style="width: 100%"
         >
           <el-table-column prop="orderNo" label="订单编号" align="center" />
-          <!-- <el-table-column prop="goodsImg" label="图片" align="center">
-            <template slot-scope="scope">
-              <el-image
-                style="width: 100px; height: 100px"
-                :src="scope.row.goodsImg"
-                :preview-src-list="[scope.row.goodsImg]"
-              />
-            </template>
-          </el-table-column> -->
-          <!-- <el-table-column prop="goodsName" label="商品名称" align="center" /> -->
           <el-table-column prop="createTime" label="订单创建时间" align="center">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime }}</span>
@@ -61,12 +51,6 @@
                 </span>
                 <el-button type="primary" size="small" @click="handleLookDetail(scope.row.shopInfoList)">查看详情</el-button>
               </el-row>
-              <!-- <el-popconfirm
-                title="确定删除吗？"
-                @onConfirm="handleDel(scope.row.id)"
-              >
-                <el-button slot="reference" size="small">删除</el-button>
-              </el-popconfirm> -->
             </template>
           </el-table-column>
         </el-table>
@@ -215,7 +199,7 @@ export default {
     },
     handleLookDetail(shopInfoList) {
       this.dialogVisibleDetail = true
-      this.tableData = shopInfoList.goodsList
+      this.tableData = shopInfoList[0].goodsList
     },
     getGoodImg(goodsImg) {
       if (goodsImg) {

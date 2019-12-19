@@ -147,14 +147,13 @@ export default {
       this.emitChange()
     },
     emitChange() {
-      if (typeof this.onChange === 'function') {
-        this.onChange(
-          this.province,
-          this.city,
-          this.region,
-          this.detailAddress
-        )
+      const data = {
+        'province': this.province,
+        'city': this.city,
+        'region': this.region,
+        'detailAddress': this.detailAddress
       }
+      this.$emit('onChange', data)
     }
   }
 }
