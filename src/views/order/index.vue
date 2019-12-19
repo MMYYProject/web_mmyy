@@ -49,7 +49,7 @@
                 <span v-else>
                   <el-button type="primary" size="small" @click="handleEdit(scope.row.orderNo)">发货</el-button>
                 </span>
-                <el-button type="primary" size="small" @click="handleLookDetail(scope.row.shopInfoList)">查看详情</el-button>
+                <el-button type="primary" size="small" @click="handleLookDetail(scope.row.goodsList)">查看详情</el-button>
               </el-row>
             </template>
           </el-table-column>
@@ -189,7 +189,10 @@ export default {
         if (valid) {
           const params = { ...this.form }
           ajaxDeliverGoods(params).then(res => {
-            console.log(res)
+            this.$message({
+              message: '发货成功',
+              type: 'success'
+            })
           })
         } else {
           console.log('error submit!!')
@@ -197,9 +200,9 @@ export default {
         }
       })
     },
-    handleLookDetail(shopInfoList) {
+    handleLookDetail(goodsList) {
       this.dialogVisibleDetail = true
-      this.tableData = shopInfoList[0].goodsList
+      this.tableData = goodsList
     },
     getGoodImg(goodsImg) {
       if (goodsImg) {
@@ -215,7 +218,6 @@ export default {
     // 获取快递公司
     handleAjaxExpress() {
       ajaxExpressList({}).then(res => {
-        console.log(res)
         this.expressList = res.obj
       })
     },
